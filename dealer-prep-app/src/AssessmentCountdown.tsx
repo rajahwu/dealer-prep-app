@@ -1,20 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, Clock, Target, Home, Building2 } from 'lucide-react';
+
+// interface Task {
+//   text: string;
+// }
+
+interface Phase {
+  id: string;
+  time: string;
+  endTime: number;
+  title: string;
+  location: 'home' | 'office' | 'transit';
+  icon: typeof Home;
+  cue: string;
+  tasks: string[];
+}
+
+interface CompletedTasks {
+  [key: string]: boolean;
+}
 
 const AssessmentCountdown = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [completedTasks, setCompletedTasks] = useState({});
+  const [completedTasks, setCompletedTasks] = useState<CompletedTasks>({});
   const [showFocus, setShowFocus] = useState(false);
 
   // Assessment time is 7 PM today
   const assessmentTime = new Date();
   assessmentTime.setHours(19, 0, 0, 0);
 
-  const phases = [
+  const phases: Phase[] = [
     {
       id: 'home-1',
-      time: '2:15 PM',
-      endTime: new Date(assessmentTime).setHours(13, 40, 0, 0),
+      time: '2:00 PM',
+      endTime: new Date(assessmentTime).setHours(14, 40, 0, 0),
       title: 'Mental Prep & Hand Activation',
       location: 'home',
       icon: Home,
@@ -30,7 +49,7 @@ const AssessmentCountdown = () => {
     {
       id: 'home-2',
       time: '2:40 PM',
-      endTime: new Date(assessmentTime).setHours(14, 20, 0, 0),
+      endTime: new Date(assessmentTime).setHours(15, 20, 0, 0),
       title: 'Mechanics Review',
       location: 'home',
       icon: Home,
@@ -45,8 +64,8 @@ const AssessmentCountdown = () => {
     },
     {
       id: 'home-3',
-      time: '3:10 PM',
-      endTime: new Date(assessmentTime).setHours(15, 0, 0, 0),
+      time: '3:20 PM',
+      endTime: new Date(assessmentTime).setHours(16, 0, 0, 0),
       title: 'Confidence Building',
       location: 'home',
       icon: Home,
@@ -61,7 +80,7 @@ const AssessmentCountdown = () => {
     },
     {
       id: 'transition',
-      time: '3:45 PM',
+      time: '4:00 PM',
       endTime: new Date(assessmentTime).setHours(16, 0, 0, 0),
       title: 'Travel & Settle',
       location: 'transit',
@@ -77,7 +96,7 @@ const AssessmentCountdown = () => {
     },
     {
       id: 'office-1',
-      time: '4:45 PM',
+      time: '4:00 PM',
       endTime: new Date(assessmentTime).setHours(16, 45, 0, 0),
       title: 'Table Warm-In',
       location: 'office',
@@ -93,7 +112,7 @@ const AssessmentCountdown = () => {
     },
     {
       id: 'office-2',
-      time: '5:30 PM',
+      time: '4:45 PM',
       endTime: new Date(assessmentTime).setHours(17, 30, 0, 0),
       title: 'High-Value Reps',
       location: 'office',
@@ -109,7 +128,7 @@ const AssessmentCountdown = () => {
     },
     {
       id: 'office-3',
-      time: '6:15 PM',
+      time: '5:30 PM',
       endTime: new Date(assessmentTime).setHours(18, 15, 0, 0),
       title: 'Assessment Simulation',
       location: 'office',
@@ -125,7 +144,7 @@ const AssessmentCountdown = () => {
     },
     {
       id: 'office-4',
-      time: '6:45 PM',
+      time: '6:15 PM',
       endTime: new Date(assessmentTime).setHours(18, 45, 0, 0),
       title: 'Strategic Rest',
       location: 'office',
@@ -141,8 +160,8 @@ const AssessmentCountdown = () => {
     },
     {
       id: 'pre-assessment',
-      time: '7:15 PM',
-      endTime: assessmentTime,
+      time: '6:45 PM',
+      endTime: assessmentTime.getTime(),
       title: 'Walk-In Mode',
       location: 'office',
       icon: Target,
@@ -168,11 +187,11 @@ const AssessmentCountdown = () => {
   };
 
   const currentPhaseIndex = getCurrentPhase();
-  const timeUntilAssessment = assessmentTime - currentTime;
+  const timeUntilAssessment = assessmentTime.getTime() - currentTime.getTime();
   const hoursLeft = Math.floor(timeUntilAssessment / (1000 * 60 * 60));
   const minutesLeft = Math.floor((timeUntilAssessment % (1000 * 60 * 60)) / (1000 * 60));
 
-  const toggleTask = (phaseId, taskIndex) => {
+  const toggleTask = (phaseId: string, taskIndex: number) => {
     const key = `${phaseId}-${taskIndex}`;
     setCompletedTasks(prev => ({
       ...prev,
@@ -180,7 +199,7 @@ const AssessmentCountdown = () => {
     }));
   };
 
-  const getPhaseProgress = (phaseId) => {
+  const getPhaseProgress = (phaseId: string): number => {
     const phase = phases.find(p => p.id === phaseId);
     if (!phase) return 0;
     const completed = phase.tasks.filter((_, i) => 
@@ -195,7 +214,7 @@ const AssessmentCountdown = () => {
     'Posture: Calm body = competent read'
   ];
 
-  const LocationIcon = ({ type }) => {
+  const LocationIcon = ({ type }: { type: 'home' | 'office' | 'transit' }) => {
     const icons = {
       home: Home,
       office: Building2,
