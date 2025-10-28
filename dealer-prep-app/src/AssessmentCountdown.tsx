@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Check, Clock, Target, Home, Building2, FileText, X } from 'lucide-react';
-
-
+import { Check, Clock, Target, Home, Building2, FileText, X, MessageSquare } from 'lucide-react';
 
 interface Phase {
     id: string;
@@ -23,6 +21,7 @@ const AssessmentCountdown = () => {
     const [completedTasks, setCompletedTasks] = useState<CompletedTasks>({});
     const [showFocus, setShowFocus] = useState(false);
     const [showCriteria, setShowCriteria] = useState(false);
+    const [showScripts, setShowScripts] = useState(false);
 
     // Assessment time is 7 PM today
     const assessmentTime = new Date();
@@ -160,7 +159,7 @@ const AssessmentCountdown = () => {
         {
             id: 'pre-assessment',
             time: '6:45 PM',
-            endTime: assessmentTime.getTime(),
+            endTime: assessmentTime.setHours(18, 15, 0, 0),
             title: 'Walk-In Mode',
             location: 'office',
             icon: Target,
@@ -173,6 +172,8 @@ const AssessmentCountdown = () => {
                 'Internal cue: "My hands know this. Let them work."'
             ]
         }
+
+
     ];
 
     useEffect(() => {
@@ -313,11 +314,36 @@ const AssessmentCountdown = () => {
                         gap: '0.5rem',
                         fontSize: '1rem',
                         fontWeight: '500',
-                        transition: 'all 0.2s'
+                        transition: 'all 0.2s',
+                        marginBottom: '0.5rem'
                     }}
                 >
                     <FileText className="w-4 h-4" />
                     {showCriteria ? 'Hide' : 'Show'} Assessment Criteria
+                </button>
+
+                {/* Scripts Button */}
+                <button
+                    onClick={() => setShowScripts(!showScripts)}
+                    style={{
+                        width: '100%',
+                        padding: '0.75rem',
+                        background: showScripts ? '#ffa502' : '#1a1d29',
+                        border: `1px solid ${showScripts ? '#ffa502' : 'rgba(255, 165, 2, 0.3)'}`,
+                        borderRadius: '0.5rem',
+                        color: '#f5f5f5',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        fontSize: '1rem',
+                        fontWeight: '500',
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    <MessageSquare className="w-4 h-4" />
+                    {showScripts ? 'Hide' : 'Show'} Narration Scripts
                 </button>
 
                 {/* Focus Cues Panel */}
@@ -617,6 +643,340 @@ const AssessmentCountdown = () => {
                                 <p style={{ lineHeight: '1.8', fontStyle: 'italic', color: '#00e6a8' }}>
                                     You're being evaluated on "Can we put this person at a table tomorrow?" — not "Is this person already world-class?"
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Narration Scripts Modal */}
+                {showScripts && (
+                    <div style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.9)',
+                        zIndex: 1000,
+                        overflowY: 'auto',
+                        padding: '1rem'
+                    }}>
+                        <div style={{
+                            maxWidth: '800px',
+                            margin: '0 auto',
+                            background: '#1a1d29',
+                            borderRadius: '0.75rem',
+                            border: '2px solid #ffa502',
+                            padding: '2rem',
+                            position: 'relative'
+                        }}>
+                            <button
+                                onClick={() => setShowScripts(false)}
+                                style={{
+                                    position: 'absolute',
+                                    top: '1rem',
+                                    right: '1rem',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: '#f5f5f5',
+                                    cursor: 'pointer',
+                                    padding: '0.5rem'
+                                }}
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
+
+                            <h2 style={{
+                                fontSize: '1.75rem',
+                                fontWeight: 'bold',
+                                marginBottom: '1rem',
+                                color: '#ffa502'
+                            }}>
+                                Narration Scripts
+                            </h2>
+
+                            <p style={{
+                                lineHeight: '1.8',
+                                marginBottom: '2rem',
+                                opacity: 0.9
+                            }}>
+                                Verbal narration slows you down naturally, builds calm commentary skills, and trains your brain to stay present through each step. Use these scripts during practice to build confidence and composure.
+                            </p>
+
+                            {/* Script 1 */}
+                            <div style={{
+                                marginBottom: '2rem',
+                                padding: '1.5rem',
+                                background: '#0f1117',
+                                borderRadius: '0.5rem',
+                                border: '2px solid #5a4bff'
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginBottom: '1rem'
+                                }}>
+                                    <div style={{
+                                        padding: '0.25rem 0.75rem',
+                                        background: '#5a4bff',
+                                        borderRadius: '1rem',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        PRACTICE
+                                    </div>
+                                    <h3 style={{
+                                        fontSize: '1.25rem',
+                                        fontWeight: 'bold',
+                                        color: '#5a4bff'
+                                    }}>
+                                        Script 1: Technical Narration
+                                    </h3>
+                                </div>
+                                <p style={{
+                                    fontSize: '0.875rem',
+                                    opacity: 0.8,
+                                    marginBottom: '1rem',
+                                    fontStyle: 'italic'
+                                }}>
+                                    Use during 4:00-4:45 PM warm-in — keeps you focused on form
+                                </p>
+                                <div style={{
+                                    padding: '1rem',
+                                    background: '#1a1d29',
+                                    borderRadius: '0.375rem',
+                                    fontFamily: 'monospace',
+                                    fontSize: '0.9375rem',
+                                    lineHeight: '2',
+                                    whiteSpace: 'pre-line'
+                                }}>
+                                    {`"Boxing the deck... squaring the corners.
+
+First riffle — thumbs at the back edge, even pressure... release... watching the cascade.
+
+Bridge — gentle lift, let it fall naturally.
+
+Second riffle — same rhythm, same pressure... release... smooth cascade.
+
+Strip cut — clean separation, no exposure.
+
+Final square — align the corners, check the edges.
+
+Ready to deal."`}
+                                </div>
+                            </div>
+
+                            {/* Script 2 */}
+                            <div style={{
+                                marginBottom: '2rem',
+                                padding: '1.5rem',
+                                background: '#0f1117',
+                                borderRadius: '0.5rem',
+                                border: '2px solid #00e6a8'
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginBottom: '1rem'
+                                }}>
+                                    <div style={{
+                                        padding: '0.25rem 0.75rem',
+                                        background: '#00e6a8',
+                                        color: '#0f1117',
+                                        borderRadius: '1rem',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        MOCK RUNS
+                                    </div>
+                                    <h3 style={{
+                                        fontSize: '1.25rem',
+                                        fontWeight: 'bold',
+                                        color: '#00e6a8'
+                                    }}>
+                                        Script 2: Confidence Narration
+                                    </h3>
+                                </div>
+                                <p style={{
+                                    fontSize: '0.875rem',
+                                    opacity: 0.8,
+                                    marginBottom: '1rem',
+                                    fontStyle: 'italic'
+                                }}>
+                                    Use during 5:30-6:15 PM simulations — builds assessment composure
+                                </p>
+                                <div style={{
+                                    padding: '1rem',
+                                    background: '#1a1d29',
+                                    borderRadius: '0.375rem',
+                                    fontFamily: 'monospace',
+                                    fontSize: '0.9375rem',
+                                    lineHeight: '2',
+                                    whiteSpace: 'pre-line'
+                                }}>
+                                    {`"Setting up for the shuffle.
+
+First riffle... controlled release... clean bridge.
+
+Second riffle... maintaining rhythm... even cascade.
+
+Strip cut... keeping cards secure.
+
+Squaring the deck.
+
+Ready to deal — index down, wrist steady, seats one through seven."`}
+                                </div>
+                            </div>
+
+                            {/* Script 3 */}
+                            <div style={{
+                                marginBottom: '2rem',
+                                padding: '1.5rem',
+                                background: '#0f1117',
+                                borderRadius: '0.5rem',
+                                border: '2px solid #ffa502'
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginBottom: '1rem'
+                                }}>
+                                    <div style={{
+                                        padding: '0.25rem 0.75rem',
+                                        background: '#ffa502',
+                                        color: '#0f1117',
+                                        borderRadius: '1rem',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        FINAL WARM-UP
+                                    </div>
+                                    <h3 style={{
+                                        fontSize: '1.25rem',
+                                        fontWeight: 'bold',
+                                        color: '#ffa502'
+                                    }}>
+                                        Script 3: Minimal Cue Narration
+                                    </h3>
+                                </div>
+                                <p style={{
+                                    fontSize: '0.875rem',
+                                    opacity: 0.8,
+                                    marginBottom: '1rem',
+                                    fontStyle: 'italic'
+                                }}>
+                                    Use at 6:45-7:00 PM — just enough to stay grounded
+                                </p>
+                                <div style={{
+                                    padding: '1rem',
+                                    background: '#1a1d29',
+                                    borderRadius: '0.375rem',
+                                    fontFamily: 'monospace',
+                                    fontSize: '0.9375rem',
+                                    lineHeight: '2',
+                                    whiteSpace: 'pre-line'
+                                }}>
+                                    {`"Box.
+
+Riffle one... bridge.
+
+Riffle two... bridge.
+
+Strip.
+
+Square.
+
+Deal."`}
+                                </div>
+                            </div>
+
+                            {/* Pro Tips */}
+                            <div style={{
+                                padding: '1.5rem',
+                                background: 'rgba(90, 75, 255, 0.1)',
+                                borderRadius: '0.5rem',
+                                border: '1px solid #5a4bff',
+                                marginBottom: '1.5rem'
+                            }}>
+                                <h3 style={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: 'bold',
+                                    marginBottom: '1rem',
+                                    color: '#5a4bff'
+                                }}>
+                                    Pro Narration Tips
+                                </h3>
+                                <div style={{ lineHeight: '1.8' }}>
+                                    <p style={{ marginBottom: '1rem' }}>
+                                        <strong>Tone Matters:</strong>
+                                    </p>
+                                    <ul style={{ paddingLeft: '1.5rem', marginBottom: '1rem' }}>
+                                        <li>Speak at conversational volume (not whisper, not loud)</li>
+                                        <li>Keep your voice steady and even (trains calm under observation)</li>
+                                        <li>Pause briefly between actions (gives hands time to execute)</li>
+                                    </ul>
+
+                                    <p style={{ marginBottom: '0.5rem' }}>
+                                        <strong style={{ color: '#ff4757' }}>What NOT to Say:</strong>
+                                    </p>
+                                    <ul style={{ paddingLeft: '1.5rem', marginBottom: '1rem', opacity: 0.8 }}>
+                                        <li>"Okay, here we go..." (sounds nervous)</li>
+                                        <li>"Hopefully this works..." (undermines confidence)</li>
+                                        <li>"Oops, let me try again..." (if you mess up, continue smoothly)</li>
+                                    </ul>
+
+                                    <p style={{ marginBottom: '0.5rem' }}>
+                                        <strong style={{ color: '#00e6a8' }}>If You Make a Mistake:</strong>
+                                    </p>
+                                    <p style={{ opacity: 0.9 }}>
+                                        Keep narrating through the recovery: "Adjusting the alignment... continuing with the riffle..." Shows control, not panic.
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Silent Mental Script */}
+                            <div style={{
+                                padding: '1.5rem',
+                                background: 'rgba(0, 230, 168, 0.1)',
+                                borderRadius: '0.5rem',
+                                border: '2px solid #00e6a8'
+                            }}>
+                                <h3 style={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: 'bold',
+                                    marginBottom: '0.75rem',
+                                    color: '#00e6a8'
+                                }}>
+                                    Silent Mental Script (For Actual Assessment)
+                                </h3>
+                                <p style={{
+                                    fontSize: '0.875rem',
+                                    opacity: 0.8,
+                                    marginBottom: '1rem',
+                                    fontStyle: 'italic'
+                                }}>
+                                    If they don't want you talking, use this internal mantra:
+                                </p>
+                                <div style={{
+                                    padding: '1rem',
+                                    background: '#0f1117',
+                                    borderRadius: '0.375rem',
+                                    fontFamily: 'monospace',
+                                    fontSize: '1rem',
+                                    lineHeight: '2',
+                                    whiteSpace: 'pre-line',
+                                    textAlign: 'center',
+                                    color: '#00e6a8'
+                                }}>
+                                    {`Calm hands.
+Even release.
+Gentle bridge.
+Smooth rhythm.
+Controlled finish.`}
+                                </div>
                             </div>
                         </div>
                     </div>
